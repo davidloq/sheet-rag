@@ -1,0 +1,9 @@
+{
+  "name": "sheet-rag",
+  "ai_search_namespaces": [
+    {
+      "binding": "MY_SEARCH",
+      "namespace": "default"
+    }
+  ]
+}
