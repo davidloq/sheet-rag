@@ -25,34 +25,46 @@
         </div>
     </div>
 
-    <script>
-        const messagesDiv = document.getElementById('messages');
-        const input = document.getElementById('userInput');
+<script>
+    const messagesDiv = document.getElementById('messages');
+    const input = document.getElementById('userInput');
 
-        async function sendMessage() {
-            const question = input.value.trim();
-            if (!question) return;
+    async function sendMessage() {
+        const question = input.value.trim();
+        if (!question) return;
 
-            addMessage('user', question);
-            input.value = '';
+        addMessage('user', question);
+        input.value = '';
 
-            const response = await fetch('YOUR_WORKER_URL_HERE', {  // We will replace this later
+        try {
+            // This now points to your Pages Function
+            const response = await fetch('/api/search', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: question })
+                body: JSON.stringify({ message: question })
             });
 
-            const data = await response.text();
-            addMessage('ai', data || 'Sorry, I could not get a response.');
-        }
+            if (!response.ok) throw new Error('Network response was not ok');
 
-        function addMessage(sender, text) {
-            const div = document.createElement('div');
-            div.className = `message ${sender}`;
-            div.textContent = text;
-            messagesDiv.appendChild(div);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            const data = await response.json();
+            
+            // Extract the text content from the AI response
+            // AI Search chatCompletions returns an object; adjust based on the exact structure
+            const aiText = data.response || data.answer || JSON.stringify(data);
+            addMessage('ai', aiText);
+        } catch (error) {
+            console.error("Error:", error);
+            addMessage('ai', 'Sorry, something went wrong.');
         }
+    }
+
+    function addMessage(sender, text) {
+        const div = document.createElement('div');
+        div.className = `message ${sender}`;
+        div.textContent = text;
+        messagesDiv.appendChild(div);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
     </script>
 </body>
 </html>
