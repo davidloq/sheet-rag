@@ -48,7 +48,7 @@
 
             const data = await response.json();
             
-            // Extract the text content from the AI res
+            // Extract the text content from the AI 
             // AI Search chatCompletions returns an object; adjust based on the exact structure
             const aiText = data.response || data.answer || JSON.stringify(data);
             addMessage('ai', aiText);
