@@ -1,6 +1,10 @@
 name = "sheet-rag"
 compatibility_date = "2026-03-27"
 compatibility_flags = ["nodejs_compat"]
-
-# This ensures Cloudflare Pages recognizes the configuration correctly
 pages_build_output_dir = "."
+
+# This is how you bind AI Search in a modern Pages wrangler.toml
+[[ai_search_namespaces]]
+binding = "MY_SEARCH"
+namespace = "default"
+remote = true
