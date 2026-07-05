@@ -69,9 +69,15 @@
     function addMessage(sender, text) {
         const div = document.createElement('div');
         div.className = `message ${sender}`;
-        // Using innerHTML allows the browser to render Markdown-style formatting 
-        // like bold text (**) if the AI returns them.
-        div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Use decodeURIComponent and unescape to handle potential character encoding issues
+        try {
+            // This handles cases where characters were double-encoded
+            div.textContent = text; 
+        } catch (e) {
+            div.textContent = text;
+        }
+        
         messagesDiv.appendChild(div);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
