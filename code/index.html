@@ -37,7 +37,6 @@
         input.value = '';
 
         try {
-            // This now points to your Pages Function
             const response = await fetch('/api/search', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -48,9 +47,12 @@
 
             const data = await response.json();
             
-            // Extract the text content from the AI 
-            // AI Search chatCompletions returns an object; adjust based on the exact structure
-            const aiText = data.response || data.answer || JSON.stringify(data);
+            // CORRECTED: Extract the content string from the nested choices object
+            // This navigates: data -> choices array -> first choice -> message -> content
+            const aiText = data.choices && data.choices[0] 
+                ? data.choices[0].message.content 
+                : "No response received.";
+
             addMessage('ai', aiText);
         } catch (error) {
             console.error("Error:", error);
@@ -61,10 +63,12 @@
     function addMessage(sender, text) {
         const div = document.createElement('div');
         div.className = `message ${sender}`;
-        div.textContent = text;
+        // Using innerHTML allows the browser to render Markdown-style formatting 
+        // like bold text (**) if the AI returns them.
+        div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         messagesDiv.appendChild(div);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
-    </script>
+</script>
 </body>
 </html>
