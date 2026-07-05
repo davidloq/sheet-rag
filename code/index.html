@@ -49,7 +49,9 @@
 
             if (!response.ok) throw new Error('Network response was not ok');
 
-            const data = await response.json();
+            // FIX: Get the response as a blob or use text() to force UTF-8 decoding
+            const responseText = await response.text(); 
+            const data = JSON.parse(responseText);
             
             // CORRECTED: Extract the content string from the nested choices object
             // This navigates: data -> choices array -> first choice -> message -> content
