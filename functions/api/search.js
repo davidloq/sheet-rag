@@ -4,6 +4,13 @@ export async function onRequestPost(context) {
 
   const AI_SEARCH_URL = "https://accaec7a-efe1-4e07-a964-ec7c4fe41734.search.ai.cloudflare.com/chat/completions";
 
+  // CLOUDFLARE AI EXPECTS THIS STRUCTURE:
+  const payload = {
+    messages: [
+      { role: "user", content: body.message || body.content || JSON.stringify(body) }
+    ]
+  };
+
   try {
     const response = await fetch(AI_SEARCH_URL, {
       method: "POST",
@@ -11,12 +18,12 @@ export async function onRequestPost(context) {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}` 
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      // This will help you see the exact error in your browser Network tab
+      // If it's a 400, the errorText will tell us EXACTLY what field is missing
       return new Response(JSON.stringify({ error: `AI Search failed: ${response.status}`, details: errorText }), { 
         status: response.status,
         headers: { "Content-Type": "application/json" }
