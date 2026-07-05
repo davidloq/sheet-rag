@@ -31,9 +31,11 @@ export async function onRequestPost(context) {
     }
 
     const data = await response.json();
+    // Explicitly set the headers to ensure the browser expects UTF-8
     return new Response(JSON.stringify(data), {
-      headers: { "Content-Type": "application/json;charset=utf-8" }
-    });
+      headers: { 
+        "Content-Type": "application/json; charset=utf-8" 
+      }
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), { 
       status: 500,

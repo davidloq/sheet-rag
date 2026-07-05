@@ -67,20 +67,22 @@
     }
 
     function addMessage(sender, text) {
-        const div = document.createElement('div');
-        div.className = `message ${sender}`;
-        
-        // Use decodeURIComponent and unescape to handle potential character encoding issues
-        try {
-            // This handles cases where characters were double-encoded
-            div.textContent = text; 
-        } catch (e) {
-            div.textContent = text;
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            
+            // Fix for "Mojibake" (broken Vietnamese characters)
+            // This converts the string back to bytes and re-interprets them as UTF-8
+            try {
+                const bytes = new TextEncoder().encode(text);
+                const correctedText = new TextDecoder("utf-8").decode(bytes);
+                div.textContent = correctedText;
+            } catch (e) {
+                div.textContent = text;
+            }
+            
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
-        
-        messagesDiv.appendChild(div);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
 </script>
 </body>
 </html>
