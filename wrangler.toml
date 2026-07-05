@@ -1,7 +1,8 @@
 name = "sheet-rag"
-main = "./functions/api/search.js" # This points to your function
 compatibility_date = "2026-03-27"
+# This property is required for Pages projects to validate the config
+pages_build_output_dir = "." 
 
-[[ai_search]]
+[[ai_search_namespaces]]
 binding = "MY_SEARCH"
-index_name = "sheets-rag"
+namespace = "default"
