@@ -2,8 +2,3 @@ name = "sheet-rag"
 compatibility_date = "2026-07-04"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "code"
-
-# Use this block for AI Search in Pages
-[[ai_search]]
-binding = "MY_SEARCH"
-index_name = "sheets-rag"
