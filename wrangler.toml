@@ -1,8 +1,6 @@
 name = "sheet-rag"
 compatibility_date = "2026-03-27"
-# This property is required for Pages projects to validate the config
-pages_build_output_dir = "." 
+compatibility_flags = ["nodejs_compat"]
 
-[[ai_search_namespaces]]
-binding = "MY_SEARCH"
-namespace = "default"
+# This ensures Cloudflare Pages recognizes the configuration correctly
+pages_build_output_dir = "."
