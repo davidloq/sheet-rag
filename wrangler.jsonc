@@ -1,5 +1,6 @@
 {
   "name": "sheet-rag",
+  "compatibility_date": "2026-03-27",
   "ai_search_namespaces": [
     {
       "binding": "MY_SEARCH",
