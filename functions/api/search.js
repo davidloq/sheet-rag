@@ -32,7 +32,7 @@ export async function onRequestPost(context) {
 
     const data = await response.json();
     return new Response(JSON.stringify(data), {
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json;charset=utf-8" }
     });
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), { 
