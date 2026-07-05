@@ -1,22 +1,26 @@
 export async function onRequestPost(context) {
-  const { request } = context;
-  const body = await request.json();
+  const body = await context.request.json();
+  const token = context.env.API_TOKEN; 
 
-  // Use the Chat completions endpoint you provided
   const AI_SEARCH_URL = "https://accaec7a-efe1-4e07-a964-ec7c4fe41734.search.ai.cloudflare.com/chat/completions";
 
   try {
     const response = await fetch(AI_SEARCH_URL, {
       method: "POST",
       headers: { 
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` 
       },
       body: JSON.stringify(body)
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`AI Search error: ${response.status} - ${errorText}`);
+      // This will help you see the exact error in your browser Network tab
+      return new Response(JSON.stringify({ error: `AI Search failed: ${response.status}`, details: errorText }), { 
+        status: response.status,
+        headers: { "Content-Type": "application/json" }
+      });
     }
 
     const data = await response.json();
