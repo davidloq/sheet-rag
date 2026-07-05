@@ -15,7 +15,7 @@ export async function onRequestPost(context) {
     const response = await fetch(AI_SEARCH_URL, {
       method: "POST",
       headers: { 
-        "Content-Type": "application/json",
+        "Content-Type": "application/json; charset=utf-8",
         "Authorization": `Bearer ${token}` 
       },
       body: JSON.stringify(payload)
